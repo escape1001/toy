@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lights on</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@300&family=Gamja+Flower&display=swap" rel="stylesheet">
+    <style>
+        /*canvas{
+            outline: 1px solid red;
+        }*/
+    </style>
+    <script>
+        let hyo_canvas, ctx;
+        
+        window.onload = function(){
+            hyo_canvas = document.getElementById('hyojin');
+            ctx = hyo_canvas.getContext('2d');
+            
+            const img = new Image();
+            img.onload = function(){
+                ctx.drawImage(img, 0, 0, 400, 400);
+            }
+    
+            img.src = 'assets/bg.png';
+        }
+        
+        function lightsOn(txt){
+            //const txt = document.getElementById('txt').value;
+            ctx.font = "60px 'Gamja Flower'";
+            ctx.fillStyle = "#83412b";
+            ctx.fillText(txt.substring(0,1),45,265);
+            ctx.fillText(txt.substring(1,2),285,270);
+        }
+
+        function getHyojin(){
+            const dataURL = hyo_canvas.toDataURL('image/png');
+
+            var aTag = document.createElement('a');
+
+            aTag.download = 'getHyojin';
+            aTag.href = dataURL;
+            aTag.click();
+        }
+    </script>
+</head>
+<body>
+    <!--<header id="header">
+        <h1>코딩퓨즈</h1>
+        <nav class="gnb">
+            <ul>
+                <li>효진짤생성기</li>
+            </ul>
+        </nav>
+    </header>-->
+    <div class="body">
+        <section class="section-hyojin">
+            <h2>효진짤생성기</h2>
+            <div class="inner">
+                <canvas id="hyojin" width="400" height="400"></canvas>
+                <label for="txt">text</label>
+                <input id="txt" type="text" maxlength="2" onkeyup="lightsOn(this.value);"/>
+                <button onclick="getHyojin();">이미지 다운</button>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
