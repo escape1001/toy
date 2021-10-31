@@ -9,9 +9,30 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@300&family=Gamja+Flower&display=swap" rel="stylesheet">
     <style>
-        /*canvas{
-            outline: 1px solid red;
-        }*/
+        :root[color-theme="light"]{
+            --main-back:#ffffff;
+            --point-back:#efefef;
+            --main-txt:#222222;
+            --point-txt:rgb(211, 21, 0);
+        }
+
+        :root[color-theme="dark"]{
+            --main-back:#222222;
+            --point-back:#555555;
+            --main-txt:#efefef;
+            --point-txt:rgb(0, 135, 94);
+        }
+
+        body{
+            background-color: var(--main-back);
+            color:var(--main-txt);
+            transition: color .2s ease-in-out;
+        }
+
+        h1{
+            color:var(--point-txt);
+            transition: color .2s ease-in-out;
+        }
     </style>
     <script>
         let hyo_canvas, ctx;
@@ -28,7 +49,7 @@
             img.src = 'assets/bg.png';
         }
         
-        function lightsOn(txt){
+        function getTxt(txt){
             //const txt = document.getElementById('txt').value;
             ctx.font = "60px 'Gamja Flower'";
             ctx.fillStyle = "#83412b";
@@ -45,26 +66,43 @@
             aTag.href = dataURL;
             aTag.click();
         }
+
+        let lights_on = true;
+        function ONF(){
+            const root = document.documentElement;
+            const onf_btn = document.getElementById('onf_btn');
+            console.log(root);
+            if(lights_on){
+                root.setAttribute('color-theme','dark');
+                onf_btn.innerText = 'Lights On';
+                lights_on = false;
+            } else{
+                root.setAttribute('color-theme','light');
+                onf_btn.innerText = 'Lights Off';
+                lights_on = true;
+            }
+        }
     </script>
 </head>
 <body>
-    <!--<header id="header">
+    <header id="header">
         <h1>코딩퓨즈</h1>
         <nav class="gnb">
             <ul>
                 <li>효진짤생성기</li>
             </ul>
         </nav>
-    </header>-->
+    </header>
     <div class="body">
         <section class="section-hyojin">
             <h2>효진짤생성기</h2>
             <div class="inner">
                 <canvas id="hyojin" width="400" height="400"></canvas>
-                <label for="txt">text</label>
-                <input id="txt" type="text" maxlength="2" onkeyup="lightsOn(this.value);"/>
+                <label for="txt">입력 : </label>
+                <input id="txt" type="text" maxlength="2" onkeyup="getTxt(this.value);"/>
                 <button onclick="getHyojin();">이미지 다운</button>
             </div>
+            <button id="onf_btn" onclick="ONF();">Lights off</button>
         </section>
     </div>
 </body>
