@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .section-setting{
+      overflow: hidden;
+    }
+
+    .section-setting video, .section-setting ul{
+      float:left;
+    }
+
+    #section_list{
+      outline: 1px solid red;
+      text-align: center;
+    }
+
+    #section_list li{
+      display:flex;
+      justify-content:space-around;
+      align-items: center;
+    }
+  </style>
+  <script>
+    function leadingZero(number, length) {
+      return number.toString().padStart(length, 0);
+    }
+
+    const tw = 320;
+    const th = 180;
+    let classid, section, title, desc, timecode, vid;
+    let t_link = Array();
+    let t_index = 0;
+
+    window.onload = function(){
+      setInputs();
+      vid = document.getElementById('vid');
+    }  
+    
+    function setInputs(){
+      classid = document.getElementById('classid');
+      section = document.getElementById('section');
+      title = document.getElementById('title');
+      desc = document.getElementById('desc');
+      timecode = document.getElementById('time').value;
+
+      classid.value = "$classid";
+      section.value = t_index+1;
+      title.value = "";
+      desc.value = "";
+    }  
+
+    function setTimecode(){
+      time.value = transTime(vid.currentTime);
+    }  
+    
+    function transTime(current){
+      let min = leadingZero(Math.floor(current / 60), 2);
+      let sec = leadingZero(Math.floor(current % 60), 2);
+      let hour = min>59 ? leadingZero(Math.floor(cmin / 60), 2) : "00";
+
+      timecode = hour+":"+min+":"+sec;
+
+      return timecode;
+    }
+
+    function addSection(){
+      const section_list = document.getElementById('section_list');
+      let canvas = document.createElement('canvas');
+      let ctx = canvas.getContext('2d');
+      ctx.drawImage(vid, 0,0,tw,th);
+      
+      let li = document.createElement('li');
+      li.innerHTML = "<span class='section'>"+section.value+"</span><span class='title'>"+title.value+"</span><span class='desc'>"+desc.value+"</span><span class='timecode'>"+timecode+"</span>";
+      li.prepend(canvas);
+      section_list.append(li);
+      t_link[t_index] = canvas.toDataURL('image/png');
+      
+      t_index++;
+      setInputs();
+    }
+
+    function down(){
+      const a = document.createElement('a');
+      a.href = t_link[t_index-1];
+      a.download = "thumb_"+(t_index-1);
+      a.click();
+      console.log(a);
+    }
+  </script>
+</head>
+<body>
+  <section class="section-setting">
+    <h3>구간 세팅 영역</h3>
+    <video id="vid" type="video/mp4" controls ontimeupdate="setTimecode();">
+      <source src="assets/test.mp4">
+    </video>
+    <ul>
+      <li>
+        <label for="classid">classid</label>
+        <input id="classid" type="num"/>
+      </li>
+      <li>
+        <label for="section">section</label>
+        <input id="section" type="num"/>
+      </li>
+      <li>
+        <label for="title">title</label>
+        <input id="title" type="text"/>
+      </li>
+      <li>
+        <label for="desc">desc</label>
+        <input id="desc" type="text"/>
+      </li>
+      <li>
+        <label for="time">timecode</label>
+        <input id="time" type="text" value="00:00:00"/>
+      </li>
+      <li>
+        <button onclick="addSection();">섹션 추가</button>
+      </li>
+    </ul>
+  </section>
+  <section class="section-list-area">
+    <h3>리스트 확인 영역</h3>
+    <ul id="section_list"></ul>
+  </section>
+  <!--<button onclick="down();">download</button>-->
+</body>
+</html>
