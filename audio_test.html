@@ -10,6 +10,19 @@
     <main>
         <h1>p5js 테스트</h1>
         <input id="showVolume"/>
+        <div class="svg-test">
+          <svg xmlns="http://www.w3.org/2000/svg" width="366" height="366" viewBox="0 0 366 366" fill="none">
+          </svg>
+          <svg class="prog1" xmlns="http://www.w3.org/2000/svg" width="366" height="366" viewBox="0 0 366 366" fill="none">
+            <defs>
+              <mask id="mask1">
+                <rect width="366" height="366" fill="#000"/>
+                <circle cx="183" cy="183" r="165.5" stroke="#fff" stroke-width="35" stroke-dasharray="600" stroke-dashoffset="600"/>
+              </mask>
+            </defs>
+            <circle mask="url(#mask1)" cx="183" cy="183" r="165.5" stroke="#303030" stroke-width="35" stroke-dasharray="10 10"/>
+           </svg>
+        </div>
     </main>
     <script src="sketch.js"></script>
   </body>
