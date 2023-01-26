@@ -41,7 +41,7 @@
         
         // 2. 카메라, 렌더러 세팅
         let camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-        camera.position.set(0, 100, 300);
+        camera.position.set(0, 5, 50);
         const canvas = renderer.domElement;
         const width = canvas.clientWidth;
         const height = canvas.clientHeight;
@@ -57,28 +57,65 @@
         renderer.outputEncoding = THREE.sRGBEncoding;
 
         // 3. 조명, 배경 세팅
-        scene.background = new THREE.Color("#efefef");
-        let light = new THREE.DirectionalLight(0xffffff, 1);
+        const spaceTexture = new THREE.TextureLoader().load('assets/bg_universe.jpeg');
+        scene.background = spaceTexture;
+
+        let pointlight = new THREE.DirectionalLight(0xffffff, 1);
+        let ambientLight = new THREE.AmbientLight("#6cf");
+        scene.add(pointlight, ambientLight);
+
+        // 랜덤 별 뿌리기
+        const addStar = () => {
+            const geometry = new THREE.SphereGeometry(0.25, 24, 24);
+            const metarial = new THREE.MeshStandardMaterial({color: 0xffffff});
+            const star = new THREE.Mesh(geometry, metarial);
+
+            const [x,y,z] = Array(3).fill().map(()=> THREE.MathUtils.randFloatSpread(200));
+
+            star.position.set(x,y,z);
+            scene.add(star);
+        };
+
+        Array(500).fill().forEach(addStar);
 
         // 컨트롤러 추가
         const controls = new OrbitControls(camera, canvas);
 
         // 4. 모델 가져와서 씬에 추가
         let loader = new GLTFLoader();
-        loader.load("assets/3d/matilda/scene.gltf", (gltf)=>{
-            scene.add(gltf.scene);
 
+        Promise.all([
+            loader.loadAsync("assets/3d/vaporwave_mountains/scene.gltf"),
+            loader.loadAsync("assets/3d/lofi_palm_tree/scene.gltf"),
+            loader.loadAsync("assets/3d/tuk_tuk/scene.gltf")
+        ]).then((gltfArr)=>{
+            const [mountains, palmTree, tukTuk] = gltfArr;
+            scene.add(mountains.scene);
+            scene.add(palmTree.scene);
+            scene.add(tukTuk.scene);
+
+            mountains.scene.scale.set(20,20,20);
+            mountains.scene.rotation.y = Math.PI * 0.25;
+
+            palmTree.scene.scale.set(0.4,0.4,0.4);
+            palmTree.scene.position.set(-10,0,20);
+            
+            tukTuk.scene.rotation.set(0,0.8,0);
+            tukTuk.scene.scale.set(3,3,3);
+            tukTuk.scene.position.set(0,-0.15,30);
+    
             // fin. 렌더
             const animate = ()=>{
                 requestAnimationFrame(animate);
-                gltf.scene.rotation.y += 0.05;
-
+                camera.position.z += 0.05;
+    
                 controls.update();
-
+    
                 renderer.render(scene, camera);
             };
             animate();
         });
+
 
     </script>
 </head>
@@ -92,6 +129,9 @@
 <!--
     // 해상도 맞추기
     https://velog.io/@whdnjsdyd111/Three.js-Three-%EA%B8%B0%EC%B4%88
+
+    // 오브젝트 조정
+    https://velog.io/@100pearlcent/%EC%98%A4%EB%B8%8C%EC%A0%9D%ED%8A%B8-%EC%9B%80%EC%A7%81%EC%9D%B4%EA%B8%B0#-rotation
 
     // 기본강의
     https://www.youtube.com/watch?v=CojyGfCMvuU
