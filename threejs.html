@@ -12,6 +12,11 @@
             margin:0;
             padding:0;
         }
+
+        canvas{
+            width:100vw;
+            height: 100vh;
+        }
     </style>
     <script type="importmap">
         {
@@ -32,10 +37,20 @@
             antialias:true
         });
         renderer.outputEncoding = THREE.sRGBEncoding;
-
+        
         // 2. 카메라 세팅
         let camera = new THREE.PerspectiveCamera(45, 1, 1, 10000);
         camera.position.set(0, 100, 300);
+        const canvas = renderer.domElement;
+        const width = canvas.clientWidth;
+        const height = canvas.clientHeight;
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+
+        const needResize = canvas.width !== width || canvas.height !== height;
+        if (needResize) {
+            renderer.setSize(width, height, false);
+        }
 
         // 3. 조명, 배경 세팅
         scene.background = new THREE.Color("#efefef");
@@ -58,7 +73,7 @@
     </script>
 </head>
 <body>
-    <canvas id="theater" width="500" height="500"></canvas>
+    <canvas id="theater"></canvas>
     
 </body>
 </html>
