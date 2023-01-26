@@ -1,0 +1,11 @@
+Model Information:
+* title:	my animated tyrannosaurus rex
+* source:	https://sketchfab.com/3d-models/my-animated-tyrannosaurus-rex-8a18e24fce2243dda5656d4c312836d9
+* author:	dinomaster (https://sketchfab.com/dinomaster)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "my animated tyrannosaurus rex" (https://sketchfab.com/3d-models/my-animated-tyrannosaurus-rex-8a18e24fce2243dda5656d4c312836d9) by dinomaster (https://sketchfab.com/dinomaster) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
