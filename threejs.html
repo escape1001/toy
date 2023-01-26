@@ -13,8 +13,52 @@
             padding:0;
         }
     </style>
+    <script type="importmap">
+        {
+            "imports": {
+              "three": "https://unpkg.com/three@0.141.0/build/three.module.js",
+              "GLTFLoader" : "https://unpkg.com/three@0.141.0/examples/jsm/loaders/GLTFLoader.js"
+            }
+        }
+    </script>
+    <script type="module">
+        import {GLTFLoader} from "GLTFLoader";
+        import * as THREE from "three";
+
+        // 1. 씬 기본세팅
+        let scene = new THREE.Scene();
+        let renderer = new THREE.WebGLRenderer({
+            canvas:document.querySelector("#theater"),
+            antialias:true
+        });
+        renderer.outputEncoding = THREE.sRGBEncoding;
+
+        // 2. 카메라 세팅
+        let camera = new THREE.PerspectiveCamera(45, 1, 1, 10000);
+        camera.position.set(0, 100, 300);
+
+        // 3. 조명, 배경 세팅
+        scene.background = new THREE.Color("#efefef");
+        let light = new THREE.DirectionalLight(0xffffff, 1);
+
+        // 4. 모델 가져와서 씬에 추가
+        let loader = new GLTFLoader();
+        loader.load("assets/3d/matilda/scene.gltf", (gltf)=>{
+            scene.add(gltf.scene);
+
+            // fin. 렌더
+            const animate = ()=>{
+                requestAnimationFrame(animate);
+                gltf.scene.rotation.y += 0.05;
+                renderer.render(scene, camera);
+            };
+            animate();
+        });
+
+    </script>
 </head>
 <body>
+    <canvas id="theater" width="500" height="500"></canvas>
     
 </body>
 </html>
